@@ -17,3 +17,10 @@ resource "azurerm_key_vault" "main_kv" {
     secret_permissions = ["Get", "List"]
   }
 }
+
+# Create Key Vault Secret to Store SQL Connection String
+resource "azurerm_key_vault_secret" "sql_connection_string" {
+  name         = var.sql_connection_string_secret_name
+  value        = var.sql_connection_string
+  key_vault_id = azurerm_key_vault.main_kv.id
+}

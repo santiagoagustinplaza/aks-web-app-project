@@ -25,13 +25,19 @@ variable "purge_protection_enabled" {
   default     = true
 }
 
-variable "soft_delete_enabled" {
-  description = "Enable Soft Delete for the Key Vault"
-  type        = bool
-  default     = true
-}
-
 variable "aks_managed_identity_id" {
   description = "Object ID of the AKS Managed Identity with access to Key Vault secrets"
   type        = string
+}
+
+variable "sql_connection_string" {
+  description = "Connection string for Azure SQL Database used by AKS app"
+  type        = string
+  sensitive   = true
+}
+
+variable "sql_connection_string_secret_name" {
+  description = "Name of the Key Vault secret to store SQL connection string"
+  type        = string
+  default     = "sql-connection-string"
 }
