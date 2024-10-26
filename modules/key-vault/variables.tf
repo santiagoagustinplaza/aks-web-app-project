@@ -13,13 +13,13 @@ variable "resource_group_name" {
   type        = string
 }
 
-variable "key_vault_sku" {
+variable "key_vault_sku" { #Optional
   description = "SKU tier of the Key Vault"
   type        = string
   default     = "standard"
 }
 
-variable "purge_protection_enabled" {
+variable "purge_protection_enabled" { #Optional
   description = "Enable Purge Protection for the Key Vault"
   type        = bool
   default     = true
@@ -36,7 +36,7 @@ variable "sql_connection_string" {
   sensitive   = true
 }
 
-variable "sql_connection_string_secret_name" {
+variable "sql_connection_string_secret_name" { #Optional
   description = "Name of the Key Vault secret to store SQL connection string"
   type        = string
   default     = "sql-connection-string"
