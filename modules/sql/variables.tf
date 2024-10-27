@@ -48,11 +48,11 @@ variable "virtual_network_id" {
 variable "aks_subnet_start_ip" {
   description = "Start IP address for AKS subnet access"
   type        = string
-  default     = "10.0.0.0" 
+  default     = "10.0.0.0"
 }
 
 variable "aks_subnet_end_ip" {
   description = "End IP address for AKS subnet access"
   type        = string
-  default     = "10.0.255.255" 
+  default     = "10.0.255.255"
 }
