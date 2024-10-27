@@ -46,11 +46,13 @@ variable "virtual_network_id" {
 }
 
 variable "aks_subnet_start_ip" {
-  description = "The starting IP of the AKS subnet for firewall rules"
+  description = "Start IP address for AKS subnet access"
   type        = string
+  default     = "10.0.0.0" 
 }
 
 variable "aks_subnet_end_ip" {
-  description = "The ending IP of the AKS subnet for firewall rules"
+  description = "End IP address for AKS subnet access"
   type        = string
+  default     = "10.0.255.255" 
 }
