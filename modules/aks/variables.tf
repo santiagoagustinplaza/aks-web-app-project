@@ -18,11 +18,6 @@ variable "dns_prefix" {
   type        = string
 }
 
-variable "azure_ad_admin_group_object_id" {
-  description = "Azure AD Group Object ID for AKS Admins"
-  type        = string
-}
-
 variable "node_count" { #Optional
   description = "Initial number of nodes in the default pool"
   type        = number
