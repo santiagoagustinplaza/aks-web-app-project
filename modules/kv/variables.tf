@@ -1,3 +1,13 @@
+variable "environment" {
+  description = "The environment name of the resource"
+  type        = string
+}
+
+variable "project_id" {
+  description = "The project ID of the resource"
+  type        = string
+}
+
 variable "key_vault_name" {
   description = "Name of the Azure Key Vault"
   type        = string

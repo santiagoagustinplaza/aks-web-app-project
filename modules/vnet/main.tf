@@ -1,9 +1,11 @@
 # Create Virtual Network
 resource "azurerm_virtual_network" "aksvnet" {
-  name                = var.vnet_name
+  depends_on          = [module.metadata-validation]
+  name                = module.metadata-validation.constructed_name
   location            = var.location
   resource_group_name = var.resource_group_name
   address_space       = var.vnet_address_space
+  tags                = module.metadata-validation.tags
 }
 
 # Create a Subnet for AKS
@@ -70,4 +72,13 @@ resource "azurerm_network_security_rule" "aks_outbound_internet" {
 resource "azurerm_subnet_network_security_group_association" "aks_subnet_nsg_association" {
   subnet_id                 = azurerm_subnet.aks-default.id
   network_security_group_id = azurerm_network_security_group.aks_nsg.id
+}
+
+module "metadata-validation" {
+  source              = "../../sub-modules/metadata-validation"
+  provided_name       = var.vnet_name
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  project_id          = var.project_id
+  environment         = var.environment
 }

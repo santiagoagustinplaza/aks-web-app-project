@@ -1,18 +1,22 @@
 resource "azurerm_sql_server" "sql_server" {
-  name                         = var.sql_server_name
+  depends_on                   = [module.sql-server-metadata-validation]
+  name                         = module.sql-server-metadata-validation.constructed_name
   resource_group_name          = var.resource_group_name
   location                     = var.location
   version                      = "12.0"
   administrator_login          = var.sql_admin_user
   administrator_login_password = var.sql_admin_password
+  tags                         = module.sql-server-metadata-validation.tags
 }
 
 resource "azurerm_sql_database" "sql_db" {
+  depends_on          = [module.sql-db-metadata-validation, azurerm_sql_server.sql_server]
   name                = var.sql_database_name
   resource_group_name = var.resource_group_name
   location            = var.location
   server_name         = azurerm_sql_server.sql_server.name
   sku_name            = var.sql_sku_name
+  tags                = module.sql-db-metadata-validation.tags
 }
 
 # Private Endpoint for secure access within VNet
@@ -60,4 +64,22 @@ resource "azurerm_sql_firewall_rule" "aks_subnet_rule" {
   server_name         = azurerm_sql_server.sql_server.name
   start_ip_address    = var.aks_subnet_start_ip
   end_ip_address      = var.aks_subnet_end_ip
+}
+
+module "sql-server-metadata-validation" {
+  source              = "../../sub-modules/metadata-validation"
+  provided_name       = var.sql_server_name
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  project_id          = var.project_id
+  environment         = var.environment
+}
+
+module "sql-db-metadata-validation" {
+  source              = "../../sub-modules/metadata-validation"
+  provided_name       = var.sql_database_name
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  project_id          = var.project_id
+  environment         = var.environment
 }

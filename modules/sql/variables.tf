@@ -1,3 +1,13 @@
+variable "environment" {
+  description = "The environment name of the resource"
+  type        = string
+}
+
+variable "project_id" {
+  description = "The project ID of the resource"
+  type        = string
+}
+
 variable "sql_server_name" {
   description = "The name of the SQL Server"
   type        = string

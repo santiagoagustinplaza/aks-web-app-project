@@ -1,11 +1,21 @@
 #Global Variables
 variable "location" {
-  description = "Location for ACR resource"
+  description = "Location for the resource"
   type        = string
 }
 
 variable "resource_group_name" {
-  description = "Resource Group name where the ACR is created"
+  description = "Resource Group name where the resource is created"
+  type        = string
+}
+
+variable "environment" {
+  description = "The environment name of the resource"
+  type        = string
+}
+
+variable "project_id" {
+  description = "The project ID of the resource"
   type        = string
 }
 

@@ -4,10 +4,12 @@ data "azuread_client_config" "current" {}
 
 # Define the AKS Cluster with Azure AD and Managed Identity
 resource "azurerm_kubernetes_cluster" "aks_cluster" {
-  name                = var.aks_name
+  depends_on          = [module.metadata-validation, data.azurerm_client_config.current]
+  name                = module.metadata-validation.constructed_name
   location            = var.location
   resource_group_name = var.resource_group_name
   dns_prefix          = var.dns_prefix
+  tags                = module.metadata-validation.tags
 
   # Enable Azure RBAC and Azure AD integration for user authentication
   azure_active_directory_role_based_access_control {
@@ -47,7 +49,17 @@ resource "azuread_group" "admin_group" {
 
 # Role Assignment for AKS Admin Group
 resource "azurerm_role_assignment" "admin_role_assignment" {
+  depends_on           = [azuread_group.admin_group, azurerm_kubernetes_cluster.aks_cluster]
   principal_id         = azurerm_ad_group.admin_group.object_id
   role_definition_name = "Azure Kubernetes Service Admin"
   scope                = azurerm_kubernetes_cluster.aks_cluster.id
+}
+
+module "metadata-validation" {
+  source              = "../../sub-modules/metadata-validation"
+  provided_name       = var.aks_name
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  project_id          = var.project_id
+  environment         = var.environment
 }
