@@ -1,0 +1,3 @@
+[submodule "sub-modules/metadata-validation"]
+	path = sub-modules/metadata-validation
+	url = https://github.com/santiagoagustinplaza/azure-modules-metadata-validation
